@@ -1,0 +1,1 @@
+<link rel="stylesheet" href="${pageContext.request.contextPath}/node_modules/font-awesome/css/font-awesome.min.css">

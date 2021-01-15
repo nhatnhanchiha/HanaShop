@@ -1,0 +1,24 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="HanaShop:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/HanaShop_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="HanaShop/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="HanaShop" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="file-copy" path="$USER_HOME$/sqljdbc42.jar" />
+          <element id="file-copy" path="$USER_HOME$/jstl-1.2.jar" />
+          <element id="file-copy" path="$USER_HOME$/log4j-1.2.17.jar" />
+          <element id="file-copy" path="$USER_HOME$/cos-2020.4.jar" />
+          <element id="file-copy" path="$USER_HOME$/AccessGoogle-lib/gson-2.8.2.jar" />
+          <element id="file-copy" path="$USER_HOME$/AccessGoogle-lib/httpcore-4.4.9.jar" />
+          <element id="file-copy" path="$USER_HOME$/AccessGoogle-lib/fluent-hc-4.5.5.jar" />
+          <element id="file-copy" path="$USER_HOME$/AccessGoogle-lib/httpclient-4.5.5.jar" />
+          <element id="file-copy" path="$USER_HOME$/AccessGoogle-lib/commons-logging-1.2.jar" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,1 @@
+<script src="${pageContext.request.contextPath}/node_modules/jquery/dist/jquery.min.js"></script>
