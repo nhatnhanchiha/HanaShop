@@ -7,19 +7,20 @@ import com.bac.models.entities.Product;
 
 import java.util.List;
 
-public class ProductsByCategoryPage {
+public class ProductsByCategoryPage extends Page {
+
     public final static int SIZE_OF_CARDS = 20;
+    private static final long serialVersionUID = 6240615356103696830L;
     private Category category;
     private List<FoodCard> foodCards;
     private Carousel hotCarousel;
-    private List<Category> categories;
     private boolean hasNextPage;
     private int page;
 
     public ProductsByCategoryPage(List<Product> products, Carousel hotCarousel, List<Category> categories, int page) {
+        super(categories);
         this.foodCards = FoodCard.mapping(products);
         this.hotCarousel = hotCarousel;
-        this.categories = categories;
         this.page = page;
         if (foodCards.size() > SIZE_OF_CARDS) {
             hasNextPage = true;
@@ -53,13 +54,6 @@ public class ProductsByCategoryPage {
         this.hotCarousel = hotCarousel;
     }
 
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
 
     public boolean isHasNextPage() {
         return hasNextPage;

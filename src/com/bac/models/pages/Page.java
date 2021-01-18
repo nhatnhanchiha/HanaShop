@@ -1,11 +1,11 @@
 package com.bac.models.pages;
 
-import com.bac.models.components.carousel.Carousel;
 import com.bac.models.entities.Category;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Page {
+public class Page implements Serializable {
     protected List<Category> categories;
 
     public Page(List<Category> categories) {

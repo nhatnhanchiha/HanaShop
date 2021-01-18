@@ -60,16 +60,17 @@ public class AddingCartItemServlet extends HttpServlet {
                     hanaShopContext.rollback();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getCause());
             }
-            logger.error(throwables);
+            logger.error(throwables.getCause());
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } finally {
             if (hanaShopContext != null) {
                 try {
                     hanaShopContext.closeConnection();
                 } catch (SQLException throwables) {
-                    logger.error(throwables.getClass(), throwables);
+                    logger.error(throwables.getCause());
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 }
             }
         }

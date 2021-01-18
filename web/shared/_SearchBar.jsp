@@ -22,12 +22,23 @@
     </div>
     <div class="form-group col-2">
         <input type="text" name="Input.MinPrice" id="Input_Min" class="form-control"
-               placeholder="Min Price" value="${param['Input.MinPrice']}">
+               placeholder="Min Price" value="${param['Input.MinPrice']}"
+               data-rule-number="true"
+               data-rule-range="[<%=ValidatorService.MIN_VALUE_OF_PRICE%>,<%=ValidatorService.MAX_VALUE_OF_PRICE%>]"
+               data-msg-range="The Min Price must be between <%=ValidatorService.MIN_VALUE_OF_PRICE%> and <%=ValidatorService.MAX_VALUE_OF_PRICE%>.">
+        <span class="text-danger field-validation-valid" data-valmsg-for="Input.MinPrice"
+              data-valmsg-replace="true"></span>
     </div>
-    <div class="form-group col-2">
+
+    <divl class="form-group col-2">
         <input type="text" name="Input.MaxPrice" id="Input_Max" class="form-control"
-               placeholder="Max Price" value="${param['Input.MaxPrice']}">
-    </div>
+               placeholder="Max Price" value="${param['Input.MaxPrice']}"
+               data-rule-number="true"
+               data-rule-range="[<%=ValidatorService.MIN_VALUE_OF_PRICE%>,<%=ValidatorService.MAX_VALUE_OF_PRICE%>]"
+               data-msg-range="The Min Price must be between <%=ValidatorService.MIN_VALUE_OF_PRICE%> and <%=ValidatorService.MAX_VALUE_OF_PRICE%>.">
+        <span class="text-danger field-validation-valid" data-valmsg-for="Input.MaxPrice"
+              data-valmsg-replace="true"></span>
+    </divl>
     <div class="col-2">
         <input type="hidden" name="action" value="user-search-product">
         <button type="submit" class="btn btn-info">Search</button>
@@ -38,7 +49,7 @@
     function handleClick(e) {
         const $min = $('#Input_Min')
         const $max = $('#Input_Max')
-        if (($min.val() > $max.val()) && max.val() !== '') {
+        if (($max.val() !== "" && parseFloat($min.val()) > parseFloat($max.val()))) {
             e.preventDefault()
             $('#error').text('Min price phải nhỏ hơn hoặc bằng Max price')
             return false

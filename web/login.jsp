@@ -10,6 +10,7 @@
 <head>
     <title>Login</title>
     <jsp:include page="shared/_BootstrapCss.jsp"/>
+    <link rel="stylesheet" href="shared/google-button.css">
 </head>
 <body>
 <jsp:include page="shared/_Navbar.jsp"/>
@@ -30,9 +31,20 @@
             </div>
             <input type="hidden" value="login" name="action">
             <button type="submit" class="btn btn-outline-primary">Login</button>
+            <div class="google-btn mt-3">
+                <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/HanaShop/DispatcherServlet?action=login-google&response_type=code
+    &client_id=569642017800-5n5pu8r3jp7h64aspqthfdsnk1qputf4.apps.googleusercontent.com&approval_prompt=force">
+                    <div class="google-icon-wrapper">
+                        <img class="google-icon"
+                             src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+                    </div>
+                    <p class="btn-text"><b>Sign in with google</b></p>
+                </a>
+            </div>
         </form>
-        <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/HanaShop/login-google&response_type=code
-    &client_id=569642017800-5n5pu8r3jp7h64aspqthfdsnk1qputf4.apps.googleusercontent.com&approval_prompt=force">Login With Google</a>
+        <%-- <a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/HanaShop/DispatcherServlet?action=login-google&response_type=code
+     &client_id=569642017800-5n5pu8r3jp7h64aspqthfdsnk1qputf4.apps.googleusercontent.com&approval_prompt=force">Login With Google</a>--%>
+
     </div>
 </div>
 <jsp:include page="shared/_Footer.jsp"/>

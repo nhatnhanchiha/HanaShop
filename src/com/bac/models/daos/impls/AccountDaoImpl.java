@@ -45,6 +45,26 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
+    public Account addInfo(Account account) throws SQLException {
+        PreparedStatement smt = null;
+        ResultSet rs = null;
+        try {
+            String sql = "update Account set firstName = ?, lastName = ? where username = ?;";
+            smt = conn.prepareStatement(sql);
+            smt.setString(1, account.getFirstName());
+            smt.setString(2, account.getLastName());
+            smt.setString(3, account.getUsername());
+            int result = smt.executeUpdate();
+            if (result == 1) {
+                return account;
+            }
+        } finally {
+            close(conn, smt, rs);
+        }
+        return null;
+    }
+
+    @Override
     public Account queryByUsernameAndPassword(String username, String password) throws SQLException {
         PreparedStatement smt = null;
         ResultSet rs = null;

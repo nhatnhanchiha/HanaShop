@@ -2,13 +2,16 @@ package com.bac.models.components.carousel;
 
 import com.bac.models.entities.Product;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author nhatn
  */
-public class FoodCard {
+public class FoodCard implements Serializable {
+
+    private static final long serialVersionUID = 802419926452196025L;
     private Integer productId;
     private String name;
     private String shortDescription;

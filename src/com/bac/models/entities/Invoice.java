@@ -1,16 +1,22 @@
 package com.bac.models.entities;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+
 /**
  * @author nhatn
  */
-public class Invoice {
+public class Invoice implements Serializable {
+    private static final long serialVersionUID = 5648919656475012862L;
     private int id;
-    private String email;
+    private String username;
     private String addressLine;
     private String block;
     private String district;
     private String province;
     private String phoneNumber;
+    private Boolean paid;
+    private LocalDate createDate;
 
     public int getId() {
         return id;
@@ -20,12 +26,12 @@ public class Invoice {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getAddressLine() {
@@ -66,5 +72,21 @@ public class Invoice {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Boolean getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Boolean paid) {
+        this.paid = paid;
+    }
+
+    public LocalDate getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDate createDate) {
+        this.createDate = createDate;
     }
 }

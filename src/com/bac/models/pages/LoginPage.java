@@ -4,26 +4,20 @@ import com.bac.models.entities.Category;
 
 import java.util.List;
 
-public class LoginPage {
-    private List<Category> categories;
+public class LoginPage extends Page {
+
+    private static final long serialVersionUID = 4319306641400256540L;
     private String message;
 
     public LoginPage(List<Category> categories, String message) {
-        this.categories = categories;
+        super(categories);
         this.message = message;
     }
 
     public LoginPage(List<Category> categories) {
-        this.categories = categories;
+        super(categories);
     }
 
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
 
     public String getMessage() {
         return message;

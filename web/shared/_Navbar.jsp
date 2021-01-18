@@ -29,7 +29,7 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav ml-auto">
                 <c:if test="${not empty sessionScope.username}">
-                    <a class="nav-item nav-link" href="#">${sessionScope.firstName}</a>
+                    <a class="nav-item nav-link" href="DispatcherServlet?action=view-list-invoice">${sessionScope.firstName}</a>
                     <a class="nav-item nav-link" href="DispatcherServlet?action=view-cart">View Cart</a>
                     <a href="DispatcherServlet?action=log-out" class="nav-item nav-link">Log Out</a>
                 </c:if>

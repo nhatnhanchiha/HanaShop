@@ -1,11 +1,14 @@
 package com.bac.models.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author nhatn
  */
-public class Category {
+public class Category implements Serializable {
+    private static final long serialVersionUID = 6681809561443732480L;
+
     private Integer categoryId;
     private String categoryName;
     private List<Product> products;

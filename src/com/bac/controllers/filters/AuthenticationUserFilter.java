@@ -24,7 +24,12 @@ public class AuthenticationUserFilter implements Filter {
     @Override
     public void init(FilterConfig config) throws ServletException {
         handleActions = new HashSet<>();
-//        handleActions.add("add-to-cart");
+        handleActions.add("add-to-cart");
+        handleActions.add("view-cart");
+        handleActions.add("check-out");
+        handleActions.add("get-detail-of-invoice");
+        handleActions.add("view-list-invoice");
+        handleActions.add("log-out");
     }
 
     @Override
@@ -40,8 +45,8 @@ public class AuthenticationUserFilter implements Filter {
             String action = req.getParameter("action");
             if (handleActions.contains(action)) {
                 HttpSession session = req.getSession();
-                String email = (String) session.getAttribute("email");
-                if (email == null) {
+                String username = (String) session.getAttribute("username");
+                if (username == null) {
                     HttpServletResponse res = (HttpServletResponse) response;
                     res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                     return;

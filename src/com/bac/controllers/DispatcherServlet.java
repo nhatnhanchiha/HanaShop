@@ -24,17 +24,21 @@ public class DispatcherServlet extends HttpServlet {
         urlMapping.put("register", "RegistrationServlet");
         urlMapping.put("login", "AuthenticationServlet");
         urlMapping.put("view-detail-product", "DetailProductServlet");
+        urlMapping.put("search-product-by-category", "FindingProductByTypeServlet"); //ok
+        urlMapping.put("user-search-product", "UserSearchProductServlet"); //ok
+        urlMapping.put("login-google", "LoggingGoogleServlet"); //ok
 
         //google
 
         //User
-        urlMapping.put("search-product-by-category", "FindingProductByTypeServlet"); //ok
         urlMapping.put("add-to-cart", "AddingCartItemServlet"); //ok
-        urlMapping.put("user-search-product", "UserSearchProductServlet"); //ok
         urlMapping.put("view-cart", "CartDetailServlet");
         urlMapping.put("remove-cart-item", "RemovingCartItemServlet"); //ok
         urlMapping.put("check-out", "CheckingOutServlet");
+        urlMapping.put("get-detail-of-invoice", "GettingDetailOfInvoiceServlet");
+        urlMapping.put("view-list-invoice", "GettingHistoryInvoiceServlet");
         urlMapping.put("log-out", "LogoutServlet"); //ok
+        urlMapping.put("add-info-google", "UpdatingInformationGoogleUserServlet"); //ok
 
         //Admin - done
         urlMapping.put("admin-search-name-product", "AdminSearchProductServlet");

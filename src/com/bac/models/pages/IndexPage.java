@@ -8,13 +8,14 @@ import java.util.List;
 /**
  * @author nhatn
  */
-public class IndexPage {
+public class IndexPage extends Page {
+
+    private static final long serialVersionUID = -8420588584591241399L;
     private List<Carousel> carousels;
-    private List<Category> categories;
 
     public IndexPage(List<Carousel> carousels, List<Category> categories) {
+        super(categories);
         this.carousels = carousels;
-        this.categories = categories;
     }
 
     public List<Carousel> getCarousels() {
@@ -25,11 +26,4 @@ public class IndexPage {
         this.carousels = carousels;
     }
 
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
 }

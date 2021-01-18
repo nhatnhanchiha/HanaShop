@@ -35,7 +35,8 @@
                         <img src="${product.imageUrl}" alt="${product.name}" class="card-img-top">
                     </div>
                     <div class="col-8">
-                        <a href="DispatcherServlet?action=view-detail-product&productId=${product.productId}"><h1>${product.name}</h1></a>
+                        <a href="DispatcherServlet?action=view-detail-product&productId=${product.productId}">
+                            <h1>${product.name}</h1></a>
                         <h3>$${product.price}</h3>
                         <h5>Created date: ${product.createDate}</h5>
                         <button type="button" class="btn btn-info add-button ml-1"
@@ -52,9 +53,9 @@
                         <a><h3>Prev</h3></a>
                     </c:if>
                     <c:if test="${model.page > 1}">
-                        <a href="DispatcherServlet?action=user-search-product&page=${model.page - 1}&Input.SearchValue=${param['Input.SearchValue']}&Select.Category=${param['Select.Category']}&Input.MinPrice=${param['Input.MinPrice']}&Input.MaxPrice=${param['Input.MaxPrice']}"><h3>Prev</h3></a>
+                        <a href="DispatcherServlet?action=user-search-product&page=${model.page - 1}&Input.SearchValue=${param['Input.SearchValue']}&Select.Category=${param['Select.Category']}&Input.MinPrice=${param['Input.MinPrice']}&Input.MaxPrice=${param['Input.MaxPrice']}">
+                            <h3>Prev</h3></a>
                     </c:if>
-
                 </div>
                 <div>
                     <h3>${model.page}</h3>
@@ -64,10 +65,26 @@
                         <a><h3>Next</h3></a>
                     </c:if>
                     <c:if test="${model.hasNextPage}">
-                        <a href="DispatcherServlet?action=user-search-product&page=${model.page + 1}&Input.SearchValue=${param['Input.SearchValue']}&Select.Category=${param['Select.Category']}&Input.MinPrice=${param['Input.MinPrice']}&Input.MaxPrice=${param['Input.MaxPrice']}"><h3>Next</h3></a>
+                        <a href="DispatcherServlet?action=user-search-product&page=${model.page + 1}&Input.SearchValue=${param['Input.SearchValue']}&Select.Category=${param['Select.Category']}&Input.MinPrice=${param['Input.MinPrice']}&Input.MaxPrice=${param['Input.MaxPrice']}">
+                            <h3>Next</h3></a>
                     </c:if>
                 </div>
             </div>
+        </div>
+        <div class="col-4">
+            <h2>Có thể bạn sẽ mua:</h2>
+            <ol>
+                <c:forEach items="${model.listSuggestion}" var="product">
+                    <li>
+                        <div>
+                            <a href="#">
+                                <h4>${product.name}</h4>
+                                <p class="short-description-min">${product.shortDescription}</p>
+                            </a>
+                        </div>
+                    </li>
+                </c:forEach>
+            </ol>
         </div>
     </div>
 </div>

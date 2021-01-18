@@ -7,6 +7,7 @@ import com.bac.models.pages.ProductsByCategoryPage;
 import com.bac.models.services.ProductService;
 import com.bac.models.services.impl.ProductServiceImpl;
 import com.bac.models.utilities.HanaShopContext;
+import org.apache.log4j.Logger;
 
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
@@ -24,6 +25,9 @@ import java.util.List;
  */
 @WebServlet(name = "FindingProductByTypeServlet", value = "/FindingProductByTypeServlet")
 public class FindingProductByTypeServlet extends HttpServlet {
+
+    private final static Logger logger = Logger.getLogger(FindingProductByTypeServlet.class);
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -76,13 +80,22 @@ public class FindingProductByTypeServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("list-by-category.jsp");
             rd.forward(request, response);
         } catch (SQLException | NamingException throwables) {
-            throwables.printStackTrace();
+            try {
+                if (hanaShopContext != null) {
+                    hanaShopContext.rollback();
+                }
+            } catch (SQLException e) {
+                logger.error(e.getCause());
+            }
+            logger.error(throwables.getCause());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } finally {
             if (hanaShopContext != null) {
                 try {
                     hanaShopContext.closeConnection();
                 } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+                    logger.error(throwables.getCause());
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 }
             }
         }

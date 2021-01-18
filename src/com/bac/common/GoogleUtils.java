@@ -20,15 +20,15 @@ public class GoogleUtils {
                 .execute().returnContent().asString();
 
         JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
-        String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
-        return accessToken;
+        return jobj.get("access_token").toString().replaceAll("\"", "");
     }
 
     public static GooglePojo getUserInfo(final String accessToken) throws ClientProtocolException, IOException {
         String link = Constants.GOOGLE_LINK_GET_USER_INFO + accessToken;
+        System.out.println("accessToken = " + accessToken);
         String response = Request.Get(link).execute().returnContent().asString();
+        System.out.println(response);
         GooglePojo googlePojo = new Gson().fromJson(response, GooglePojo.class);
-        System.out.println(googlePojo);
         return googlePojo;
     }
 

@@ -3,7 +3,9 @@ package com.bac.controllers.product;
 
 import com.bac.models.components.Cart;
 import com.bac.models.components.cart.CartObject;
+import com.bac.models.entities.Category;
 import com.bac.models.entities.Product;
+import com.bac.models.pages.CartDetailPage;
 import com.bac.models.services.ProductService;
 import com.bac.models.services.impl.ProductServiceImpl;
 import com.bac.models.utilities.HanaShopContext;
@@ -38,28 +40,34 @@ public class CartDetailServlet extends HttpServlet {
                 hanaShopContext = new HanaShopContext();
                 ProductService productService = new ProductServiceImpl(hanaShopContext);
                 List<Product> products = productService.getProductDetails(cartObject.keySet());
+                List<Category> categories = productService.getAllCategory();
+                CartDetailPage cartDetailPage = new CartDetailPage(categories);
                 if (products != null && !products.isEmpty()) {
                     cartObject.loadProductDetails(products);
                     Cart cart = new Cart(cartObject);
                     session.setAttribute("cart", cartObject);
-                    request.setAttribute("cart", cart);
+                    cartDetailPage.setCart(cart);
                 }
+
+                request.setAttribute("cartDetailPage", cartDetailPage);
+
             } catch (SQLException | NamingException throwables) {
                 try {
                     if (hanaShopContext != null) {
                         hanaShopContext.rollback();
                     }
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error(e.getCause());
                 }
-                logger.error(throwables);
+                logger.error(throwables.getCause());
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             } finally {
                 if (hanaShopContext != null) {
                     try {
                         hanaShopContext.closeConnection();
                     } catch (SQLException throwables) {
-                        logger.error(throwables.getClass(), throwables);
+                        logger.error(throwables.getCause());
+                        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     }
                 }
             }
@@ -67,10 +75,5 @@ public class CartDetailServlet extends HttpServlet {
 
         RequestDispatcher rd = request.getRequestDispatcher("cart-detail.jsp");
         rd.forward(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 }

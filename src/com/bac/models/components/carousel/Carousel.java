@@ -1,11 +1,14 @@
 package com.bac.models.components.carousel;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author nhatn
  */
-public class Carousel {
+public class Carousel implements Serializable {
+
+    private static final long serialVersionUID = 4189391396753210182L;
     private int size;
     private String name;
     private Integer categoryId;

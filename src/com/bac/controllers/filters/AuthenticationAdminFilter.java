@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author nhatn
+ */
 @WebFilter(filterName = "AdminAuthenticationFilter", urlPatterns = "/*")
 public class AuthenticationAdminFilter implements Filter {
     private Set<String> handleActions;

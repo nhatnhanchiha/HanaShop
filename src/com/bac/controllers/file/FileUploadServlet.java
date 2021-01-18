@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -39,20 +40,11 @@ public class FileUploadServlet extends HttpServlet {
         handleAction.put("edit-product", "EditingProductServlet");
     }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-/*        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-
-        MultipartRequest m=new MultipartRequest(request,);
-        out.print("successfully uploaded");*/
-
-    }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String admin = "admin";
+        HttpSession session = request.getSession();
+        String admin = (String) session.getAttribute("admin");
 
         FileRenamePolicy policy = new FileRenamePolicy() {
             @Override
@@ -84,7 +76,6 @@ public class FileUploadServlet extends HttpServlet {
         }
 
         String action = multi.getParameter("action");
-        System.out.println(action);
         if (action == null || !handleAction.containsKey(action)) {
             deleteFileWhileUploadImage(path);
             response.sendError(HttpServletResponse.SC_NOT_FOUND);

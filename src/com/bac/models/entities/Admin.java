@@ -1,9 +1,12 @@
 package com.bac.models.entities;
 
+import java.io.Serializable;
+
 /**
  * @author nhatn
  */
-public class Admin {
+public class Admin implements Serializable {
+    private static final long serialVersionUID = 761707857589394172L;
     private String username;
     private String password;
     private String name;

@@ -1,5 +1,6 @@
 package com.bac.models.services;
 
+import com.bac.models.pages.CartDetailPage;
 import com.oreilly.servlet.MultipartRequest;
 
 import javax.servlet.http.HttpServletRequest;
@@ -242,6 +243,31 @@ public class ValidatorService {
         String phoneNumber = request.getParameter("Input.PhoneNumber");
         if (phoneNumber == null
                 || !phoneNumber.matches(VALID_PHONE_NUMBER_REGEX)) {
+            return false;
+        }
+
+        String payMethodStr = request.getParameter("Select.PayMethod");
+        int payMethod = -1;
+        try {
+            payMethod = Integer.parseInt(payMethodStr);
+        } catch (NumberFormatException ignored) {
+        }
+
+        if (payMethod != CartDetailPage.CASH_PAYMENT_UPON_DELIVERY && payMethod != CartDetailPage.CASH_PAYMENT_PAYPAL) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static Boolean validateUpdateInformationGoogleUser(HttpServletRequest request) {
+        String firstName = request.getParameter("Input.FirstName");
+        if (firstName == null || firstName.trim().length() < MIN_LENGTH_OF_FIRST_NAME || firstName.length() > MAX_LENGTH_OF_FIRST_NAME) {
+            return false;
+        }
+
+        String lastName = request.getParameter("Input.LastName");
+        if (lastName == null || lastName.trim().length() < MIN_LENGTH_OF_LAST_NAME || lastName.length() > MAX_LENGTH_OF_LAST_NAME) {
             return false;
         }
 

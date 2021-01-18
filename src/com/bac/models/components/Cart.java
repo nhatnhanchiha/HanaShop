@@ -3,7 +3,11 @@ package com.bac.models.components;
 import com.bac.models.components.cart.CartObject;
 import com.bac.models.entities.Product;
 
-public class Cart {
+import java.io.Serializable;
+
+public class Cart implements Serializable {
+
+    private static final long serialVersionUID = -3648790062171618145L;
     private CartObject cartObject;
     private Double sum;
 

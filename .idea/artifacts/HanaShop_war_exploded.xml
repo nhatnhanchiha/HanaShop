@@ -17,6 +17,16 @@
           <element id="file-copy" path="$USER_HOME$/AccessGoogle-lib/fluent-hc-4.5.5.jar" />
           <element id="file-copy" path="$USER_HOME$/AccessGoogle-lib/httpclient-4.5.5.jar" />
           <element id="file-copy" path="$USER_HOME$/AccessGoogle-lib/commons-logging-1.2.jar" />
+          <element id="file-copy" path="$USER_HOME$/google-oauth2-client-servlet-0.8.2.jar" />
+          <element id="file-copy" path="$USER_HOME$/google-api-client-1.31.2.jar" />
+          <element id="file-copy" path="$USER_HOME$/google-api-services-drive-v3-rev189-1.25.0.jar" />
+          <element id="file-copy" path="$USER_HOME$/google-api-services-oauth2-v2-rev157-1.25.0.jar" />
+          <element id="file-copy" path="$USER_HOME$/google-api-services-oauth2-v2-rev146-1.18.0-rc.jar" />
+          <element id="file-copy" path="$USER_HOME$/Downloads/Compressed/AccessGoogle-lib/AccessGoogle-lib/gson-2.8.2.jar" />
+          <element id="file-copy" path="$USER_HOME$/Downloads/Compressed/AccessGoogle-lib/AccessGoogle-lib/httpcore-4.4.9.jar" />
+          <element id="file-copy" path="$USER_HOME$/Downloads/Compressed/AccessGoogle-lib/AccessGoogle-lib/fluent-hc-4.5.5.jar" />
+          <element id="file-copy" path="$USER_HOME$/Downloads/Compressed/AccessGoogle-lib/AccessGoogle-lib/httpclient-4.5.5.jar" />
+          <element id="file-copy" path="$USER_HOME$/Downloads/Compressed/AccessGoogle-lib/AccessGoogle-lib/commons-logging-1.2.jar" />
         </element>
       </element>
     </root>

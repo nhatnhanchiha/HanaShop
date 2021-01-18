@@ -2,14 +2,18 @@ package com.bac.models.entities.builder;
 
 import com.bac.models.entities.Invoice;
 
+import java.time.LocalDate;
+
 public final class InvoiceBuilder {
     private int id;
-    private String email;
+    private String username;
     private String addressLine;
     private String block;
     private String district;
     private String province;
     private String phoneNumber;
+    private Boolean paid;
+    private LocalDate createDate;
 
     private InvoiceBuilder() {
     }
@@ -23,8 +27,8 @@ public final class InvoiceBuilder {
         return this;
     }
 
-    public InvoiceBuilder withEmail(String email) {
-        this.email = email;
+    public InvoiceBuilder withUsername(String username) {
+        this.username = username;
         return this;
     }
 
@@ -53,15 +57,27 @@ public final class InvoiceBuilder {
         return this;
     }
 
+    public InvoiceBuilder withPaid(Boolean paid) {
+        this.paid = paid;
+        return this;
+    }
+
+    public InvoiceBuilder withCreateDate(LocalDate createDate) {
+        this.createDate = createDate;
+        return this;
+    }
+
     public Invoice build() {
         Invoice invoice = new Invoice();
         invoice.setId(id);
-        invoice.setEmail(email);
+        invoice.setUsername(username);
         invoice.setAddressLine(addressLine);
         invoice.setBlock(block);
         invoice.setDistrict(district);
         invoice.setProvince(province);
         invoice.setPhoneNumber(phoneNumber);
+        invoice.setPaid(paid);
+        invoice.setCreateDate(createDate);
         return invoice;
     }
 }

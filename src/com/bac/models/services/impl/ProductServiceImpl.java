@@ -2,6 +2,7 @@ package com.bac.models.services.impl;
 
 import com.bac.models.components.carousel.Carousel;
 import com.bac.models.components.carousel.FoodCard;
+import com.bac.models.components.cart.CartObject;
 import com.bac.models.daos.AdminDao;
 import com.bac.models.daos.CategoryDao;
 import com.bac.models.daos.LogSqlDao;
@@ -273,5 +274,44 @@ public class ProductServiceImpl implements ProductService {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean validCartObject(CartObject cartObject) throws SQLException {
+        ProductDao productDao = hanaShopContext.getProductDao();
+        for (Product product : cartObject.keySet()) {
+            if (product.getStatus()) {
+                Product product1 = productDao.queryById(product.getProductId());
+                if (!product1.getStatus() || cartObject.get(product) > product1.getQuantity()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean updateQuantities(CartObject cartObject) throws SQLException {
+        ProductDao productDao = hanaShopContext.getProductDao();
+        return productDao.updateQuantity(cartObject);
+    }
+
+    @Override
+    public List<Product> getListFavoriteOfUsername(String username) throws SQLException {
+        ProductDao productDao = hanaShopContext.getProductDao();
+        return productDao.queryListFavoriteByUsername(username);
+    }
+
+    @Override
+    public List<Product> getListFavoriteOfHanaShop() throws SQLException {
+        ProductDao productDao = hanaShopContext.getProductDao();
+        return productDao.queryListFavoriteOfHanaShop();
+    }
+
+    @Override
+    public List<Product> getListUserOrderTogetherProductId(Integer productId) throws SQLException {
+        ProductDao productDao = hanaShopContext.getProductDao();
+        return productDao.queryListOrderTogether(productId);
     }
 }

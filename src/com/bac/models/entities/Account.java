@@ -1,9 +1,12 @@
 package com.bac.models.entities;
 
+import java.io.Serializable;
+
 /**
  * @author nhatn
  */
-public class Account {
+public class Account implements Serializable {
+    private static final long serialVersionUID = 8919709163333132958L;
     private String username;
     private String password;
     private String firstName;

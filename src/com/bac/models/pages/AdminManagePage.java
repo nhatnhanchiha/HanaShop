@@ -5,17 +5,20 @@ import com.bac.models.entities.Product;
 
 import java.util.List;
 
-public class AdminManagePage {
+/**
+ * @author nhatn
+ */
+public class AdminManagePage extends Page {
     public static final int SIZE_OF_PRODUCTS = 20;
+    private static final long serialVersionUID = 7613452036959751840L;
     private List<Product> products;
-    private List<Category> categories;
     private int page;
     private boolean hasNextPage;
     private String message;
 
     public AdminManagePage(List<Product> products, List<Category> categories, int page) {
+        super(categories);
         this.products = products;
-        this.categories = categories;
         this.page = page;
         if (products.size() > SIZE_OF_PRODUCTS) {
             hasNextPage = true;
@@ -31,14 +34,6 @@ public class AdminManagePage {
 
     public void setProducts(List<Product> products) {
         this.products = products;
-    }
-
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
     }
 
     public int getPage() {

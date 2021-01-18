@@ -1,12 +1,15 @@
 package com.bac.models.components.carousel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author nhatn
  */
-public class Slide {
+public class Slide implements Serializable {
+
+    private static final long serialVersionUID = -3193650277193915343L;
     private final List<FoodCard> cards;
     private static final int SIZE = 4;
 

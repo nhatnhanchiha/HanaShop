@@ -5,16 +5,19 @@ import com.bac.models.entities.Product;
 
 import java.util.List;
 
-public class SearchingPage {
+public class SearchingPage extends Page {
+    public static final int SIZE_OF_PRODUCTS = 20;
+    private static final long serialVersionUID = -3617512072858341205L;
+
     private List<Product> products;
-    private List<Category> categories;
     private int page;
     private boolean hasNextPage;
-    public static final int SIZE_OF_PRODUCTS = 20;
+    private List<Product> listSuggestion;
 
-    public SearchingPage(List<Product> products, List<Category> categories, int page) {
+    public SearchingPage(List<Product> products, List<Category> categories, int page, List<Product> listSuggestion) {
+        super(categories);
+
         this.products = products;
-        this.categories = categories;
         this.page = page;
         System.out.println("products.size() = " + products.size());
         if (products.size() == SIZE_OF_PRODUCTS + 1) {
@@ -23,6 +26,7 @@ public class SearchingPage {
         } else {
             hasNextPage = false;
         }
+        this.listSuggestion = listSuggestion;
     }
 
     public int getPage() {
@@ -41,19 +45,19 @@ public class SearchingPage {
         this.products = products;
     }
 
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
-
     public boolean isHasNextPage() {
         return hasNextPage;
     }
 
     public void setHasNextPage(boolean hasNextPage) {
         this.hasNextPage = hasNextPage;
+    }
+
+    public List<Product> getListSuggestion() {
+        return listSuggestion;
+    }
+
+    public void setListSuggestion(List<Product> listSuggestion) {
+        this.listSuggestion = listSuggestion;
     }
 }

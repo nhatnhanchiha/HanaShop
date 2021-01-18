@@ -40,30 +40,28 @@ public class RegistrationServlet extends HttpServlet {
             List<Category> categories = productService.getAllCategory();
             RegisterPage registerPage = new RegisterPage(categories, null);
             request.setAttribute("model", registerPage);
+            RequestDispatcher rd = request.getRequestDispatcher("register.jsp");
+            rd.forward(request, response);
         } catch (SQLException | NamingException throwables) {
             try {
                 if (hanaShopContext != null) {
                     hanaShopContext.rollback();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getCause());
             }
-
+            logger.error(throwables.getCause());
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } finally {
             if (hanaShopContext != null) {
                 try {
                     hanaShopContext.closeConnection();
                 } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+                    logger.error(throwables.getCause());
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 }
             }
         }
-
-
-        RequestDispatcher rd = request.getRequestDispatcher("register.jsp");
-        rd.forward(request, response);
     }
 
     @Override
@@ -96,14 +94,22 @@ public class RegistrationServlet extends HttpServlet {
                     rd.forward(request, response);
                 }
             } catch (SQLException | NamingException throwables) {
-                logger.error(throwables.getClass(), throwables);
+                try {
+                    if (hanaShopContext != null) {
+                        hanaShopContext.rollback();
+                    }
+                } catch (SQLException e) {
+                    logger.error(e.getCause());
+                }
+                logger.error(throwables.getCause());
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             } finally {
                 if (hanaShopContext != null) {
                     try {
                         hanaShopContext.closeConnection();
                     } catch (SQLException throwables) {
-                        logger.error(throwables.getClass(), throwables);
+                        logger.error(throwables.getCause());
+                        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     }
                 }
             }

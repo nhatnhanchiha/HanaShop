@@ -11,7 +11,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author nhatn
@@ -117,7 +119,7 @@ public class ProductDaoImpl implements ProductDao {
                     "from Product\n" +
                     "join Category C on Product.categoryId = C.categoryId\n" +
                     "where C.categoryId = ? and Product.status = 1 and Product.quantity > 0\n" +
-                    "order by quantitySold;";
+                    "order by quantitySold desc ;";
             smt = conn.prepareStatement(sql);
             smt.setInt(1, categoryId);
             rs = smt.executeQuery();
@@ -373,5 +375,134 @@ public class ProductDaoImpl implements ProductDao {
             close(conn, smt, rs);
         }
         return null;
+    }
+
+    @Override
+    public boolean updateQuantity(Map<Product, Integer> quantitiesMap) throws SQLException {
+        PreparedStatement smt = null;
+        ResultSet rs = null;
+        try {
+            String sql = "update Product\n" +
+                    "set quantity = quantity - ?, quantitySold = quantitySold + ?\n" +
+                    "where productId = ? and quantity - Product.quantity >= 0;";
+            smt = conn.prepareStatement(sql);
+            for (Map.Entry<Product, Integer> e : quantitiesMap.entrySet()) {
+                smt.setInt(1, e.getValue());
+                smt.setInt(2, e.getValue());
+                smt.setInt(3, e.getKey().getProductId());
+                int result = smt.executeUpdate();
+                if (result != 1) {
+                    return false;
+                }
+            }
+        } finally {
+            close(conn, smt, rs);
+        }
+        return true;
+    }
+
+    @Override
+    public List<Product> queryListFavoriteByUsername(String username) throws SQLException {
+        List<Product> products = new ArrayList<>();
+        PreparedStatement smt = null;
+        ResultSet rs = null;
+        try {
+            String sql = "select top(8) idProduct, P.name, P.shortDescription, sum(InvoiceDetail.quantity) as quantity\n" +
+                    "from InvoiceDetail\n" +
+                    "join Invoice I on I.id = InvoiceDetail.idInvoice\n" +
+                    "join Account A on A.username = I.username\n" +
+                    "join Product P on InvoiceDetail.idProduct = P.productId\n" +
+                    "where A.username = ?\n" +
+                    "group by idProduct, P.name, P.shortDescription\n" +
+                    "order by quantity desc";
+            smt = conn.prepareStatement(sql);
+            smt.setString(1, username);
+            rs = smt.executeQuery();
+            while (rs.next()) {
+                Product product = ProductBuilder.aProduct()
+                        .withProductId(rs.getInt("idProduct"))
+                        .withName(rs.getString("name"))
+                        .withShortDescription(rs.getString("shortDescription"))
+                        .build();
+                products.add(product);
+            }
+        } finally {
+            close(conn, smt, rs);
+        }
+
+        return products;
+    }
+
+    @Override
+    public List<Product> queryListOrderTogether(Integer productId) throws SQLException {
+        List<Product> products = new ArrayList<>();
+        PreparedStatement smt = null;
+        ResultSet rs = null;
+        try {
+            String sql = "select top (8) idProduct,\n" +
+                    "               P.name,\n" +
+                    "               P.shortDescription,\n" +
+                    "               P.imageUrl,\n" +
+                    "               P.price,\n" +
+                    "               sum(InvoiceDetail.quantity) as quantity\n" +
+                    "from InvoiceDetail\n" +
+                    "         join Invoice I on I.id = InvoiceDetail.idInvoice\n" +
+                    "         join Product P on InvoiceDetail.idProduct = P.productId\n" +
+                    "where I.id in (select top (10) Invoice.id\n" +
+                    "               from Invoice\n" +
+                    "                        join InvoiceDetail ID on Invoice.id = ID.idInvoice\n" +
+                    "                        join Product P2 on ID.idProduct = P2.productId\n" +
+                    "               where idProduct = ?\n" +
+                    "               order by id desc)\n" +
+                    "  and idProduct <> ?\n" +
+                    "  and status = 1\n" +
+                    "group by idProduct, P.name, P.shortDescription, P.imageUrl, P.price\n" +
+                    "order by quantity desc;";
+            smt = conn.prepareStatement(sql);
+            smt.setInt(1, productId);
+            smt.setInt(2, productId);
+            rs = smt.executeQuery();
+            while (rs.next()) {
+                Product product = ProductBuilder.aProduct()
+                        .withProductId(rs.getInt("idProduct"))
+                        .withName(rs.getString("name"))
+                        .withImageUrl(rs.getString("imageUrl"))
+                        .withPrice(rs.getDouble("price"))
+                        .withShortDescription(rs.getString("shortDescription"))
+                        .build();
+                products.add(product);
+            }
+        } finally {
+            close(conn, smt, rs);
+        }
+        return products;
+    }
+
+    @Override
+    public List<Product> queryListFavoriteOfHanaShop() throws SQLException {
+        List<Product> products = new ArrayList<>();
+        PreparedStatement smt = null;
+        ResultSet rs = null;
+        try {
+            String sql = "select top(8) productId, name, shortDescription ,sum(ID.quantity) as quantity\n" +
+                    "from Product\n" +
+                    "join InvoiceDetail ID on Product.productId = ID.idProduct\n" +
+                    "where status = 1\n" +
+                    "group by productId, name, shortDescription\n" +
+                    "order by quantity desc ;";
+            smt = conn.prepareStatement(sql);
+            rs = smt.executeQuery();
+            while (rs.next()) {
+                Product product = ProductBuilder.aProduct()
+                        .withProductId(rs.getInt("productId"))
+                        .withName(rs.getString("name"))
+                        .withShortDescription(rs.getString("shortDescription"))
+                        .build();
+                products.add(product);
+            }
+        } finally {
+            close(conn, smt, rs);
+        }
+        return products;
     }
 }

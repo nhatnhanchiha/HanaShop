@@ -1,13 +1,16 @@
 package com.bac.models.entities;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
 /**
  * @author nhatn
  */
-public class Product {
+public class Product implements Serializable {
     public static final String PREFIX_IMAGE = "shared/images/";
+    private static final long serialVersionUID = 8080416647025456519L;
+
     private Integer productId;
     private String name;
     private String shortDescription;

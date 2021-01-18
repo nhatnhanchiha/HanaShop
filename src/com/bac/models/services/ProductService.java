@@ -1,6 +1,7 @@
 package com.bac.models.services;
 
 import com.bac.models.components.carousel.Carousel;
+import com.bac.models.components.cart.CartObject;
 import com.bac.models.entities.Category;
 import com.bac.models.entities.Product;
 
@@ -38,4 +39,14 @@ public interface ProductService {
     Product updateCategory(Integer productId, Integer categoryId, String admin) throws SQLException;
 
     Product updateStatus(Integer productId, int status, String admin) throws SQLException;
+
+    boolean validCartObject(CartObject cartObject) throws SQLException;
+
+    boolean updateQuantities(CartObject cartObject) throws SQLException;
+
+    List<Product> getListFavoriteOfUsername(String username) throws SQLException;
+
+    List<Product> getListFavoriteOfHanaShop() throws SQLException;
+
+    List<Product> getListUserOrderTogetherProductId(Integer productId) throws SQLException;
 }

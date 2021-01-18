@@ -1,6 +1,10 @@
 package com.bac.controllers.product;
 
+import com.bac.models.components.carousel.Carousel;
+import com.bac.models.components.carousel.FoodCard;
+import com.bac.models.entities.Category;
 import com.bac.models.entities.Product;
+import com.bac.models.pages.ProductDetailPage;
 import com.bac.models.services.ProductService;
 import com.bac.models.services.impl.ProductServiceImpl;
 import com.bac.models.utilities.HanaShopContext;
@@ -15,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @author nhatn
@@ -37,14 +42,26 @@ public class DetailProductServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
+
         try {
             hanaShopContext = new HanaShopContext();
             ProductService productService = new ProductServiceImpl(hanaShopContext);
             Product product = productService.getProductById(productId);
-            if (product == null) {
+            if (product == null || !product.getStatus()) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } else {
-                request.setAttribute("product", product);
+                List<Category> categories = productService.getAllCategory();
+                List<Product> products = productService.getListUserOrderTogetherProductId(productId);
+                Carousel carousel;
+                if (products.isEmpty()) {
+                    carousel = productService.getHotCarouselOfCategory(product.getCategoryId());
+                    carousel.setName("Mọi người cũng mua");
+                } else {
+                    List<FoodCard> foodCards = FoodCard.mapping(products);
+                    carousel = new Carousel("Mọi người cũng mua", 0, foodCards);
+                }
+                ProductDetailPage productDetailPage = new ProductDetailPage(categories, product, carousel);
+                request.setAttribute("productDetailPage", productDetailPage);
                 RequestDispatcher rd = request.getRequestDispatcher("product-detail.jsp");
                 rd.forward(request, response);
             }
@@ -54,19 +71,20 @@ public class DetailProductServlet extends HttpServlet {
                     hanaShopContext.rollback();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error(e.getCause());
             }
-            logger.error(throwables);
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            throwables.printStackTrace();
+            /*logger.error(throwables.getCause());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);*/
         } finally {
             if (hanaShopContext != null) {
                 try {
                     hanaShopContext.closeConnection();
                 } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+                    logger.error(throwables.getCause());
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 }
             }
         }
-
     }
 }

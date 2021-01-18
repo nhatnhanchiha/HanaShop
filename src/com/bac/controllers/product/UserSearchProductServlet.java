@@ -88,7 +88,18 @@ public class UserSearchProductServlet extends HttpServlet {
             ProductService productService = new ProductServiceImpl(hanaShopContext);
             List<Product> products = productService.searchProductByNameOrCategoryOrMoneyRange(searchValue, categoryId, minPrice, maxPrice, SearchingPage.SIZE_OF_PRODUCTS + 1, (page - 1) * SearchingPage.SIZE_OF_PRODUCTS);
             List<Category> categories = productService.getAllCategory();
-            SearchingPage searchingPage = new SearchingPage(products, categories, page);
+            String username = (String) request.getSession().getAttribute("username");
+            List<Product> listSuggestion;
+            if (username == null) {
+                listSuggestion = productService.getListFavoriteOfHanaShop();
+            } else {
+                listSuggestion = productService.getListFavoriteOfUsername(username);
+                if (listSuggestion.isEmpty()) {
+                    listSuggestion = productService.getListFavoriteOfHanaShop();
+                }
+            }
+
+            SearchingPage searchingPage = new SearchingPage(products, categories, page, listSuggestion);
             request.setAttribute("model", searchingPage);
             RequestDispatcher rd = request.getRequestDispatcher("search-result-page.jsp");
             rd.forward(request, response);
@@ -100,6 +111,7 @@ public class UserSearchProductServlet extends HttpServlet {
             } catch (SQLException e) {
                 logger.error(e.getCause());
             }
+            throwables.printStackTrace();
             logger.error(throwables.getCause());
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } finally {

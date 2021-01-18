@@ -10,6 +10,9 @@ import java.util.List;
  * @author nhatn
  */
 public class CartObject extends HashMap<Product, Integer> {
+    private static final long serialVersionUID = -1543646210516752252L;
+    private boolean hasDetail;
+
     public void addProduct(Integer productId) {
         Product product = ProductBuilder.aProduct()
                 .withProductId(productId)
@@ -29,8 +32,25 @@ public class CartObject extends HashMap<Product, Integer> {
         for (Product product : products) {
             this.putIfAbsent(product, 0);
             Integer quantity = this.get(product);
+            if (quantity > product.getQuantity()) {
+                product.setStatus(false);
+            }
             this.remove(product);
             this.put(product, quantity);
+            hasDetail = true;
         }
+    }
+
+    public void changeQuantity(Integer productId, int quantity) {
+        Product product = ProductBuilder.aProduct()
+                .withProductId(productId)
+                .build();
+        if (this.containsKey(product)) {
+            this.put(product, quantity);
+        }
+    }
+
+    public boolean isHasDetail() {
+        return hasDetail;
     }
 }
