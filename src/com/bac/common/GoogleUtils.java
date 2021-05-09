@@ -9,6 +9,9 @@ import org.apache.http.client.fluent.Request;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+/**
+ * @author nhatn
+ */
 public class GoogleUtils {
 
     public static String getToken(final String code) throws ClientProtocolException, IOException {
@@ -25,9 +28,7 @@ public class GoogleUtils {
 
     public static GooglePojo getUserInfo(final String accessToken) throws ClientProtocolException, IOException {
         String link = Constants.GOOGLE_LINK_GET_USER_INFO + accessToken;
-        System.out.println("accessToken = " + accessToken);
         String response = Request.Get(link).execute().returnContent().asString();
-        System.out.println(response);
         GooglePojo googlePojo = new Gson().fromJson(response, GooglePojo.class);
         return googlePojo;
     }

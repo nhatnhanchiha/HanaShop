@@ -24,7 +24,6 @@ public class AuthenticationAdminFilter implements Filter {
     @Override
     public void init(FilterConfig config) throws ServletException {
         handleActions = new HashSet<>();
-        handleActions.add("admin-search-name-product");
         handleActions.add("show-manage-list-product");
         handleActions.add("update-category-product");
         handleActions.add("update-status-product");

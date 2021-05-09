@@ -16,7 +16,8 @@
     <jsp:include page="shared/_BootstrapSocial.jsp"/>
 </head>
 <body>
-<c:set var="model" value="${requestScope.cartDetailPage}" scope="page"/>
+
+<c:set var="model" value="${requestScope.model}" scope="page"/>
 <jsp:include page="shared/_Navbar.jsp"/>
 <div class="container">
     <hr>
@@ -149,8 +150,8 @@
                         <option value="<%=CartDetailPage.CASH_PAYMENT_PAYPAL%>">Paypal</option>
                     </select>
                 </div>
-                <button class="btn btn-warning" type="submit" onclick="return confirm('Are you sure?')">Thanh Toán
-                </button>
+                <button class="btn btn-warning" type="submit" onclick="return confirm('Are you sure?')">Thanh Toán</button>
+                <div id="paypal-button-container"></div>
             </form>
         </div>
     </c:if>
@@ -171,6 +172,28 @@
         $price.text((quantity * priceOfProductId).toFixed(2))
         $sum.text((parseFloat($sum.text()) + quantity * priceOfProductId).toFixed(2))
     })
+</script>
+<script>
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            // This function sets up the details of the transaction, including the amount and line item details.
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: $('#sum').text()
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            // This function captures the funds from the transaction.
+            return actions.order.capture().then(function(details) {
+                // This function shows a transaction success message to your buyer.
+                console.log(details)
+            });
+        }
+    }).render('#paypal-button-container');
+    //This function displays Smart Payment Buttons on your web page.
 </script>
 </body>
 </html>

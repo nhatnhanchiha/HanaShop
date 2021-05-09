@@ -35,45 +35,45 @@ public class CartDetailServlet extends HttpServlet {
         HanaShopContext hanaShopContext = null;
         HttpSession session = request.getSession();
         CartObject cartObject = (CartObject) session.getAttribute("cart");
-        if (cartObject != null && !cartObject.isEmpty()) {
-            try {
-                hanaShopContext = new HanaShopContext();
-                ProductService productService = new ProductServiceImpl(hanaShopContext);
+        try {
+            hanaShopContext = new HanaShopContext();
+            ProductService productService = new ProductServiceImpl(hanaShopContext);
+            List<Category> categories = productService.getAllCategory();
+            CartDetailPage cartDetailPage = new CartDetailPage(categories);
+            if (cartObject != null && !cartObject.isEmpty()) {
                 List<Product> products = productService.getProductDetails(cartObject.keySet());
-                List<Category> categories = productService.getAllCategory();
-                CartDetailPage cartDetailPage = new CartDetailPage(categories);
                 if (products != null && !products.isEmpty()) {
                     cartObject.loadProductDetails(products);
                     Cart cart = new Cart(cartObject);
                     session.setAttribute("cart", cartObject);
                     cartDetailPage.setCart(cart);
                 }
+            }
+            request.setAttribute("model", cartDetailPage);
+            RequestDispatcher rd = request.getRequestDispatcher("cart-detail.jsp");
+            rd.forward(request, response);
 
-                request.setAttribute("cartDetailPage", cartDetailPage);
-
-            } catch (SQLException | NamingException throwables) {
-                try {
-                    if (hanaShopContext != null) {
-                        hanaShopContext.rollback();
-                    }
-                } catch (SQLException e) {
-                    logger.error(e.getCause());
-                }
-                logger.error(throwables.getCause());
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            } finally {
+        } catch (SQLException | NamingException throwables) {
+            try {
                 if (hanaShopContext != null) {
-                    try {
-                        hanaShopContext.closeConnection();
-                    } catch (SQLException throwables) {
-                        logger.error(throwables.getCause());
-                        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                    }
+                    hanaShopContext.rollback();
+                }
+            } catch (SQLException e) {
+                logger.error(e.getCause());
+            }
+            logger.error(throwables.getCause());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } finally {
+            if (hanaShopContext != null) {
+                try {
+                    hanaShopContext.closeConnection();
+                } catch (SQLException throwables) {
+                    logger.error(throwables.getCause());
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 }
             }
         }
 
-        RequestDispatcher rd = request.getRequestDispatcher("cart-detail.jsp");
-        rd.forward(request, response);
+
     }
 }

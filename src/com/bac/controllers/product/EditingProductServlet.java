@@ -60,7 +60,7 @@ public class EditingProductServlet extends HttpServlet {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } else {
                 EditProductPage editProductPage = new EditProductPage(categories, product);
-                request.setAttribute("editProduct", editProductPage);
+                request.setAttribute("model", editProductPage);
                 RequestDispatcher rd = request.getRequestDispatcher("edit-product.jsp");
                 rd.forward(request, response);
             }

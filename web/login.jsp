@@ -19,7 +19,7 @@
         <form action="DispatcherServlet" method="post">
             <hr>
             <h4>Login to buy something.</h4>
-            <h5 class="text-danger">${requestScope.model.message}</h5>
+            <h5 class="text-danger">${requestScope.message}</h5>
             <hr>
             <div class="form-group">
                 <label for="Input_Username">Username</label>

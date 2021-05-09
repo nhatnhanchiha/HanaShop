@@ -2,7 +2,6 @@ package com.bac.models.daos.impls;
 
 import com.bac.models.daos.InvoiceDetailDao;
 import com.bac.models.entities.InvoiceDetail;
-import com.bac.models.entities.Product;
 import com.bac.models.entities.builder.InvoiceDetailBuilder;
 import com.bac.models.entities.builder.ProductBuilder;
 

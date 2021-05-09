@@ -20,7 +20,6 @@
                 <hr>
                 <h3>Hello ${sessionScope.firstName}</h3>
                 <h4>We need more information. <br> <small>Skip it if you're fine when we call you ${sessionScope.firstName}</small></h4>
-                <span class="text-danger">${model.registerAccountDoubleErr}</span>
                 <hr/>
                 <div class="form-group">
                     <label for="Input_FirstName">First name</label>

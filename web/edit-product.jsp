@@ -10,16 +10,16 @@
 <%@ page import="com.bac.models.services.ValidatorService" %>
 <html>
 <head>
-    <title>Title</title>
     <title>Add product</title>
     <jsp:include page="shared/_BootstrapCss.jsp"/>
     <jsp:include page="shared/_FontAwesome.jsp"/>
     <jsp:include page="shared/_BootstrapSocial.jsp"/>
 </head>
 <body>
-<c:set var="model" value="${requestScope.editProduct}" />
+<c:set var="model" value="${requestScope.model}" />
 <jsp:include page="shared/_Navbar.jsp"/>
 <div class="container">
+    <a href="DispatcherServlet?action=log-out" class="btn btn-danger">Log Out</a>
     <h2 class="mt-3">Update product</h2>
     <div class="row">
         <div class="col-md-7">
@@ -78,7 +78,7 @@
                     <label for="Selected_CategoryId">Category</label>
                     <select class="form-control" id="Selected_CategoryId" name="Selected.CategoryId">
                         <c:forEach var="category" items="${model.categories}">
-                            <option value="${category.categoryId}" ${category.categoryId == requestScope.product.categoryId ? 'selected' : ''}>${category.categoryName}</option>
+                            <option value="${category.categoryId}" ${category.categoryId == model.product.categoryId ? 'selected' : ''}>${category.categoryName}</option>
                         </c:forEach>
                     </select>
                 </div>
@@ -127,5 +127,7 @@
 <jsp:include page="shared/_Jquery.jsp"/>
 <jsp:include page="shared/_BootstrapJs.jsp"/>
 <jsp:include page="shared/_JqueryValidation.jsp"/>
+<script src="${pageContext.request.contextPath}/shared/jquery.form.js"></script>
+<script src="${pageContext.request.contextPath}/shared/additional-methods.js"></script>
 </body>
 </html>

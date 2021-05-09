@@ -1,5 +1,6 @@
 package com.bac.controllers.file;
 
+import com.bac.models.entities.Product;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.FileRenamePolicy;
 
@@ -33,7 +34,7 @@ public class FileUploadServlet extends HttpServlet {
         acceptImageTypes.add("jpg");
         acceptImageTypes.add("pjpeg");
         acceptImageTypes.add("jpeg");
-        acceptImageTypes.add("ifif");
+        acceptImageTypes.add("jfif");
 
         handleAction = new HashMap<>(2);
         handleAction.put("add-product", "AddingProductServlet");
@@ -45,6 +46,10 @@ public class FileUploadServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         String admin = (String) session.getAttribute("admin");
+        if (admin == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
 
         FileRenamePolicy policy = new FileRenamePolicy() {
             @Override
@@ -54,7 +59,7 @@ public class FileUploadServlet extends HttpServlet {
                         System.nanoTime() + substring);
             }
         };
-        String path = request.getServletContext().getRealPath("") + "shared\\images";
+        String path = request.getServletContext().getRealPath("") + "shared\\images\\";
 
         MultipartRequest multi = new MultipartRequest(request, path,10*1024*1024, policy);
 

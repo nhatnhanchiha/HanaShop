@@ -60,6 +60,7 @@ public class ChangingStatusProductServlet extends HttpServlet {
                         }
                         RequestDispatcher rd = request.getRequestDispatcher("GettingManageListServlet");
                         rd.forward(request, response);
+                        return;
                     } catch (SQLException | NamingException throwables) {
                         try {
                             if (hanaShopContext != null) {

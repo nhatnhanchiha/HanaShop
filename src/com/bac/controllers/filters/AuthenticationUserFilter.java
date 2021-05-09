@@ -26,10 +26,12 @@ public class AuthenticationUserFilter implements Filter {
         handleActions = new HashSet<>();
         handleActions.add("add-to-cart");
         handleActions.add("view-cart");
+        handleActions.add("remove-cart-item");
         handleActions.add("check-out");
         handleActions.add("get-detail-of-invoice");
         handleActions.add("view-list-invoice");
-        handleActions.add("log-out");
+        handleActions.add("add-info-google");
+        handleActions.add("confirm-paypal");
     }
 
     @Override

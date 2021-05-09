@@ -6,6 +6,7 @@ import com.bac.models.entities.InvoiceDetail;
 import com.bac.models.entities.Product;
 import com.bac.models.entities.builder.InvoiceBuilder;
 import com.bac.models.entities.builder.InvoiceDetailBuilder;
+import com.bac.models.entities.builder.ProductBuilder;
 import com.bac.models.pages.CartDetailPage;
 import com.bac.models.services.InvoiceService;
 import com.bac.models.services.ProductService;
@@ -13,11 +14,16 @@ import com.bac.models.services.ValidatorService;
 import com.bac.models.services.impl.InvoiceServiceImpl;
 import com.bac.models.services.impl.ProductServiceImpl;
 import com.bac.models.utilities.HanaShopContext;
+import org.apache.log4j.Logger;
 
 import javax.naming.NamingException;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -31,6 +37,8 @@ import java.util.Map;
  */
 @WebServlet(name = "CheckingOutServlet", value = "/CheckingOutServlet")
 public class CheckingOutServlet extends HttpServlet {
+    private final static Logger logger = Logger.getLogger(CheckingOutServlet.class);
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -95,7 +103,6 @@ public class CheckingOutServlet extends HttpServlet {
             ProductService productService = new ProductServiceImpl(hanaShopContext);
             boolean valid = productService.validCartObject(cart);
             if (!valid) {
-                System.out.println(1);
                 response.sendRedirect("DispatcherServlet?action=view-cart&message=Some%20items%20changed%20status");
                 return;
             }
@@ -112,11 +119,10 @@ public class CheckingOutServlet extends HttpServlet {
                     .withProvince(request.getParameter("Input.Province"))
                     .withPhoneNumber(request.getParameter("Input.PhoneNumber"))
                     .withCreateDate(LocalDate.now())
+                    .withPaid(false)
+                    .withPayWithPayPal(payMethod == CartDetailPage.CASH_PAYMENT_PAYPAL)
                     .build();
 
-            if (payMethod == CartDetailPage.CASH_PAYMENT_UPON_DELIVERY) {
-                invoice.setPaid(false);
-            }
 
             List<InvoiceDetail> invoiceDetails = new ArrayList<>();
             for (Product product : cart.keySet()) {
@@ -125,6 +131,7 @@ public class CheckingOutServlet extends HttpServlet {
                             .withIdProduct(product.getProductId())
                             .withPrice(product.getPrice())
                             .withQuantity(cart.get(product))
+                            .withProduct(ProductBuilder.aProduct().withName(product.getName()).build())
                             .build();
                     invoiceDetails.add(invoiceDetail);
                 }
@@ -136,31 +143,44 @@ public class CheckingOutServlet extends HttpServlet {
             }
 
             if (invoiceInDb != null) {
-//                response.sendRedirect("DispatcherServlet?action=get-detail-of-invoice&invoiceId=" + invoiceInDb.getId());
                 boolean result = productService.updateQuantities(cart);
                 if (!result) {
-                    response.sendRedirect("DispatcherServlet?action=view-cart&message=Some%20items%20changed%20status");
+                    response.sendRedirect("DispatcherServlet?action=view-cart&message=Some%20items%20changed%20status%20or%20out%20of%20stock");
                     hanaShopContext.rollback();
-                    return;
                 } else {
-                    //todo: update quantitySold
                     hanaShopContext.saveChanges();
+                    if (payMethod == CartDetailPage.CASH_PAYMENT_PAYPAL) {
+                        session.setAttribute("invoice", invoiceInDb);
+                        session.setAttribute("invoiceDetails", invoiceDetails);
+                        session.setAttribute("sum", cart.getSum());
+                        RequestDispatcher rd = request.getRequestDispatcher("pay-with-paypal.jsp");
+                        rd.forward(request, response);
+                    } else {
+                        response.sendRedirect("DispatcherServlet?action=get-detail-of-invoice&invoiceId=" + invoiceInDb.getId());
+                    }
                     session.removeAttribute("cart");
-                    response.sendRedirect("DispatcherServlet?action=get-detail-of-invoice&invoiceId=" + invoiceInDb.getId());
                 }
             } else {
                 hanaShopContext.rollback();
-                System.out.println(3);
-                response.sendRedirect("DispatcherServlet?action=view-cart&message=Some%20items%20changed%20status");
+                response.sendRedirect("DispatcherServlet?action=view-cart&message=Some%20items%20changed%20status%20or%20out%20of%20stock");
             }
         } catch (SQLException | NamingException throwables) {
-            throwables.printStackTrace();
+            try {
+                if (hanaShopContext != null) {
+                    hanaShopContext.rollback();
+                }
+            } catch (SQLException e) {
+                logger.error(e.getCause());
+            }
+            logger.error(throwables.getCause());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } finally {
             if (hanaShopContext != null) {
                 try {
                     hanaShopContext.closeConnection();
                 } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+                    logger.error(throwables.getCause());
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 }
             }
         }

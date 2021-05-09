@@ -53,7 +53,6 @@ $(document).ready(function () {
                 toastr.success('Thanh cong')
             }
         }).fail(function (jqXHR, status, errorThrown) {
-            console.log(jqXHR.status)
             if (jqXHR.status === 404) {
                 toastr.error('Không thành công, vui long tải lại trang :( sorry')
             } else if (jqXHR.status === 401) {

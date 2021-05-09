@@ -61,7 +61,7 @@ public class DetailProductServlet extends HttpServlet {
                     carousel = new Carousel("Mọi người cũng mua", 0, foodCards);
                 }
                 ProductDetailPage productDetailPage = new ProductDetailPage(categories, product, carousel);
-                request.setAttribute("productDetailPage", productDetailPage);
+                request.setAttribute("model", productDetailPage);
                 RequestDispatcher rd = request.getRequestDispatcher("product-detail.jsp");
                 rd.forward(request, response);
             }
@@ -73,9 +73,8 @@ public class DetailProductServlet extends HttpServlet {
             } catch (SQLException e) {
                 logger.error(e.getCause());
             }
-            throwables.printStackTrace();
-            /*logger.error(throwables.getCause());
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);*/
+            logger.error(throwables.getCause());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } finally {
             if (hanaShopContext != null) {
                 try {

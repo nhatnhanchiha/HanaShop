@@ -6,6 +6,9 @@ import com.bac.models.entities.InvoiceDetail;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * @author nhatn
+ */
 public class InvoicePage implements Serializable {
     private static final long serialVersionUID = 1299053460084131324L;
 

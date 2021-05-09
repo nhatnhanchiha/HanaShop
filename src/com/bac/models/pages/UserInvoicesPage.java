@@ -7,7 +7,7 @@ import java.util.List;
 
 public class UserInvoicesPage extends Page {
     private static final long serialVersionUID = 8713226466233522748L;
-    public static final int SIZE_OF_INVOICES = 2;
+    public static final int SIZE_OF_INVOICES = 20;
 
     private List<Invoice> invoices;
     private int page;

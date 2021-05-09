@@ -2,7 +2,6 @@ package com.bac.models.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 public class LogSql implements Serializable {
     private static final long serialVersionUID = -6232792870303944018L;

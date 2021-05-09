@@ -19,6 +19,7 @@
 <c:set value="${requestScope.model}" var="model"/>
 <jsp:include page="shared/_Navbar.jsp"/>
 <div class="container">
+    <a href="DispatcherServlet?action=log-out" class="btn btn-danger">Log Out</a>
     <h2 class="mt-3">Create product</h2>
     <hr>
     <h4>Create a new food/drinks.</h4>
@@ -103,18 +104,6 @@
                     <span class="text-danger field-validation-valid" data-valmsg-for="Input.Quantity"
                           data-valmsg-replace="true"></span>
                 </div>
-                <div class="form-group row">
-                    <div class="col-sm-2">Status</div>
-                    <div class="col-sm-10">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="Checked_Status"
-                                   name="Checked.Status">
-                            <label class="form-check-label" for="Checked_Status">
-                                true
-                            </label>
-                        </div>
-                    </div>
-                </div>
                 <input type="hidden" name="action" value="add-product">
                 <button type="submit" class="btn btn-danger">Add</button>
                 <button type="reset" class="btn btn-warning">Reset</button>
@@ -127,19 +116,6 @@
 <jsp:include page="shared/_BootstrapJs.jsp"/>
 <jsp:include page="shared/_JqueryValidation.jsp"/>
 <script src="${pageContext.request.contextPath}/shared/jquery.form.js"></script>
-<script>
-    $(function () {
-        $('#upload-form').ajaxForm({
-            success: function (msg, status) {
-                alert("Upload thanh cong. Ten file la: " + msg)
-                $('#Input_ImageUrl').val(msg)
-            },
-            error: function (msg) {
-                $("#upload-error").text("Couldn't upload file");
-            }
-        });
-    });
-</script>
 <script src="${pageContext.request.contextPath}/shared/additional-methods.js"></script>
 </body>
 </html>

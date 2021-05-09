@@ -25,7 +25,6 @@ import java.util.List;
 @WebServlet(name = "IndexServlet", value = "/IndexServlet")
 public class IndexServlet extends HttpServlet {
     private final static Logger logger = Logger.getLogger(IndexServlet.class);
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HanaShopContext hanaShopContext = null;

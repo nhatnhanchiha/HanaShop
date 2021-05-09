@@ -17,6 +17,7 @@
 <c:set var="model" value="${requestScope.model}"/>
 <jsp:include page="shared/_Navbar.jsp"/>
 <div class="container">
+    <a href="DispatcherServlet?action=log-out" class="btn btn-danger">Log Out</a>
     <h1 class="text-center">Product Management</h1>
     <h3>${model.message}</h3>
     <div class="row justify-content-center">

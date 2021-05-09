@@ -50,6 +50,17 @@ public class CartObject extends HashMap<Product, Integer> {
         }
     }
 
+    public double getSum() {
+        double sum = 0;
+        for (Product product : this.keySet()) {
+            if (product.getStatus()) {
+                sum += product.getPrice() * this.get(product);
+            }
+        }
+
+        return sum;
+    }
+
     public boolean isHasDetail() {
         return hasDetail;
     }

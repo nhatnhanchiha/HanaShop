@@ -2,14 +2,13 @@ package com.bac.models.services.impl;
 
 import com.bac.models.daos.InvoiceDao;
 import com.bac.models.daos.InvoiceDetailDao;
-import com.bac.models.daos.ProductDao;
-import com.bac.models.daos.impls.InvoiceDetailDaoImpl;
 import com.bac.models.entities.Invoice;
 import com.bac.models.entities.InvoiceDetail;
 import com.bac.models.services.InvoiceService;
 import com.bac.models.utilities.HanaShopContext;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class InvoiceServiceImpl implements InvoiceService {
@@ -19,15 +18,15 @@ public class InvoiceServiceImpl implements InvoiceService {
         this.hanaShopContext = hanaShopContext;
     }
 
-    @Override
+/*    @Override
     public List<Invoice> queryAll(int limit, int offset) {
         return null;
-    }
+    }*/
 
     @Override
-    public List<Invoice> getAllInvoice(String username, int limit, int offset) throws SQLException {
+    public List<Invoice> getAllInvoice(String username, String productName, LocalDate createdDate, int limit, int offset) throws SQLException {
         InvoiceDao invoiceDao = hanaShopContext.getInvoiceDao();
-        return invoiceDao.queryByUsername(username, limit, offset);
+        return invoiceDao.queryByUsername(username, productName, createdDate, limit, offset);
     }
 
     @Override

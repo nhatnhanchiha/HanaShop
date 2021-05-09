@@ -7,6 +7,7 @@ import com.bac.models.daos.GoogleUserDao;
 import com.bac.models.daos.InvoiceDao;
 import com.bac.models.daos.InvoiceDetailDao;
 import com.bac.models.daos.LogSqlDao;
+import com.bac.models.daos.PaypalDao;
 import com.bac.models.daos.ProductDao;
 import com.bac.models.daos.impls.AccountDaoImpl;
 import com.bac.models.daos.impls.AdminDaoImpl;
@@ -15,6 +16,7 @@ import com.bac.models.daos.impls.GoogleUserDaoImpl;
 import com.bac.models.daos.impls.InvoiceDaoImpl;
 import com.bac.models.daos.impls.InvoiceDetailDaoImpl;
 import com.bac.models.daos.impls.LogSqlDaoImpl;
+import com.bac.models.daos.impls.PaypalDaoImpl;
 import com.bac.models.daos.impls.ProductDaoImpl;
 
 import javax.naming.NamingException;
@@ -32,6 +34,7 @@ public class HanaShopContext extends DbContext {
     private InvoiceDao invoiceDao;
     private InvoiceDetailDao invoiceDetailDao;
     private GoogleUserDao googleUserDao;
+    private PaypalDao paypalDao;
 
 
     public HanaShopContext() throws SQLException, NamingException {
@@ -99,6 +102,14 @@ public class HanaShopContext extends DbContext {
             googleUserDao = new GoogleUserDaoImpl(connection);
         }
         return googleUserDao;
+    }
+
+    public PaypalDao getPaypalDao() {
+        if (paypalDao == null) {
+            paypalDao = new PaypalDaoImpl(connection);
+        }
+
+        return paypalDao;
     }
 
     public String getInfo() {

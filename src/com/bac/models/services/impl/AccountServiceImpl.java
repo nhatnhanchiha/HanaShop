@@ -19,7 +19,6 @@ public class AccountServiceImpl implements AccountService {
         this.hanaShopContext = hanaShopContext;
     }
 
-    // todo: need fix save change
     @Override
     public Account register(Account account) throws SQLException {
         AccountDao accountDao = hanaShopContext.getAccountDao();

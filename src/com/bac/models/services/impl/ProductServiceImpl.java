@@ -7,7 +7,6 @@ import com.bac.models.daos.AdminDao;
 import com.bac.models.daos.CategoryDao;
 import com.bac.models.daos.LogSqlDao;
 import com.bac.models.daos.ProductDao;
-import com.bac.models.daos.impls.LogSqlDaoImpl;
 import com.bac.models.entities.Admin;
 import com.bac.models.entities.Category;
 import com.bac.models.entities.LogSql;

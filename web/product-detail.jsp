@@ -8,7 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<c:set var="model" value="${requestScope.productDetailPage}"/>
+<c:set var="model" value="${requestScope.model}"/>
 <head>
     <title>${model.product.name}</title>
     <jsp:include page="shared/_BootstrapCss.jsp"/>

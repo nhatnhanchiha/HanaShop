@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -69,11 +68,6 @@ public class ProductDaoImpl implements ProductDao {
             close(conn, smt, rs);
         }
         return products;
-    }
-
-    @Override
-    public List<Product> queryByName(String name) {
-        return null;
     }
 
     @Override
@@ -185,7 +179,7 @@ public class ProductDaoImpl implements ProductDao {
             }
             String sql = "select productId, name, shortDescription, imageUrl, longDescription, price, createDate, quantitySold, C.categoryId from Product\n" +
                     "join Category C on Product.categoryId = C.categoryId\n" +
-                    "where name like ? and price >= ? and price <= ? and quantity > 0" + categoryQueryString + "\n" +
+                    "where name like ? and price >= ? and price <= ? and quantity > 0 and Product.status = 1" + categoryQueryString + "\n" +
                     "order by createDate desc \n" +
                     "offset ? rows\n" +
                     "fetch next ? rows only ;";

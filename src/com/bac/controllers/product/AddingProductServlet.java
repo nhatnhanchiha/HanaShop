@@ -95,7 +95,7 @@ public class AddingProductServlet extends HttpServlet {
                 .withCategoryId(Integer.parseInt(multi.getParameter("Selected.CategoryId")))
                 .withPrice(Double.parseDouble(multi.getParameter("Input.Price")))
                 .withQuantity(Integer.parseInt(multi.getParameter("Input.Quantity")))
-                .withStatus(multi.getParameter("Checked.Status") != null)
+                .withStatus(true)
                 .build();
 
         try {

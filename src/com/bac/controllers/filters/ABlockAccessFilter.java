@@ -23,15 +23,19 @@ public class ABlockAccessFilter implements Filter {
     @Override
     public void init(FilterConfig config) throws ServletException {
         urlSet = new HashSet<>();
+        urlSet.add("AuthenticationAdminServlet");
         urlSet.add("AuthenticationServlet");
         urlSet.add("LogoutServlet");
         urlSet.add("RegistrationServlet");
         urlSet.add("FileUploadServlet");
-        urlSet.add("/login-google");
+        urlSet.add("LoggingGoogleServlet");
+        urlSet.add("UpdatingInformationGoogleUserServlet");
         urlSet.add("CheckingOutServlet");
+        urlSet.add("GettingDetailOfInvoiceServlet");
+        urlSet.add("GettingHistoryInvoiceServlet");
+        urlSet.add("ProcessingPaypalServlet");
         urlSet.add("AddingCartItemServlet");
         urlSet.add("AddingProductServlet");
-        urlSet.add("AdminSearchProductServlet");
         urlSet.add("CartDetailServlet");
         urlSet.add("ChangingCategoryOfProductServlet");
         urlSet.add("ChangingStatusProductServlet");
@@ -57,16 +61,20 @@ public class ABlockAccessFilter implements Filter {
         urlSet.add("_ToastrJs.jsp");
 
         urlSet.add("add-product.jsp");
+        urlSet.add("admin-login.jsp");
         urlSet.add("cart-detail.jsp");
         urlSet.add("edit-product.jsp");
         urlSet.add("index.jsp");
+        urlSet.add("invoice-detail.jsp");
         urlSet.add("list-by-category.jsp");
         urlSet.add("list-product-for-admin.jsp");
         urlSet.add("login.jsp");
+        urlSet.add("pay-with-paypal.jsp");
         urlSet.add("product-detail.jsp");
         urlSet.add("register.jsp");
+        urlSet.add("register-google.jsp");
         urlSet.add("search-result-page.jsp");
-        urlSet.add("admin-login.jsp");
+        urlSet.add("user-detail.jsp");
     }
 
     @Override

@@ -8,8 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author nhatn
@@ -21,7 +19,7 @@ public class LogSqlDaoImpl implements LogSqlDao {
         this.conn = conn;
     }
 
-    @Override
+/*    @Override
     public List<LogSql> queryAll(int limit, int offset) throws SQLException {
         List<LogSql> logSqls = new ArrayList<>();
         PreparedStatement smt = null;
@@ -50,7 +48,7 @@ public class LogSqlDaoImpl implements LogSqlDao {
         }
 
         return logSqls;
-    }
+    }*/
 
     @Override
     public LogSql insert(LogSql logSql) throws SQLException {

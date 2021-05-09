@@ -19,7 +19,6 @@ public class SearchingPage extends Page {
 
         this.products = products;
         this.page = page;
-        System.out.println("products.size() = " + products.size());
         if (products.size() == SIZE_OF_PRODUCTS + 1) {
             hasNextPage = true;
             products.remove(SIZE_OF_PRODUCTS);

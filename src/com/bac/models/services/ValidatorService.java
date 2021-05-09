@@ -4,7 +4,6 @@ import com.bac.models.pages.CartDetailPage;
 import com.oreilly.servlet.MultipartRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.regex.Pattern;
 
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -13,8 +12,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @author nhatn
  */
 public class ValidatorService {
-    private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{1,6}$", Pattern.CASE_INSENSITIVE);
     public static final int MAX_LENGTH_OF_TEXT = 50;
     public static final int MIN_LENGTH_OF_TEXT = 1;
     public static final int MAX_LENGTH_OF_USERNAME = 100;
@@ -68,21 +65,12 @@ public class ValidatorService {
         return true;
     }
 
-    public static Boolean validateLoginRequest(HttpServletRequest request) {
-        String username = request.getParameter("Input.Username");
-        if (username == null || username.trim().length() < MIN_LENGTH_OF_USERNAME || username.length() > MAX_LENGTH_OF_USERNAME) {
-            return false;
-        }
-
-        String password = request.getParameter("Input.Password");
-        if (password == null || password.trim().length() < MIN_LENGTH_OF_PASSWORD || password.length() > MAX_LENGTH_OF_PASSWORD) {
-            return false;
-        }
-
-        return true;
-    }
 
     public static Boolean validateAddProductRequest(MultipartRequest request) {
+        return checkValidProduct(request);
+    }
+
+    private static Boolean checkValidProduct(MultipartRequest request) {
         String name = convert(request.getParameter("Input.Name"));
         if (name == null || name.trim().length() < MIN_LENGTH_OF_PRODUCT_NAME || name.length() > MAX_LENGTH_OF_PRODUCT_NAME) {
             return false;
@@ -151,64 +139,7 @@ public class ValidatorService {
             return false;
         }
 
-        String name = convert(request.getParameter("Input.Name"));
-        if (name == null || name.trim().length() < MIN_LENGTH_OF_PRODUCT_NAME || name.length() > MAX_LENGTH_OF_PRODUCT_NAME) {
-            return false;
-        }
-
-
-        String shortDescription = convert(request.getParameter("Input.ShortDescription"));
-        System.out.println("shortDescription = " + shortDescription);
-        if (shortDescription == null || shortDescription.trim().length() < MIN_LENGTH_OF_DESCRIPTION || shortDescription.length() > MAX_LENGTH_OF_SHORT_DESCRIPTION) {
-            return false;
-        }
-
-
-        String longDescription = convert(request.getParameter("Input.LongDescription"));
-        if (longDescription == null || longDescription.trim().length() < MIN_LENGTH_OF_DESCRIPTION || longDescription.length() > MAX_LENGTH_OF_LONG_DESCRIPTION) {
-            return false;
-        }
-
-
-
-        String categoryIdStr = request.getParameter("Selected.CategoryId");
-        int categoryId;
-        try {
-            categoryId = Integer.parseInt(categoryIdStr);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-
-        if (categoryId <= 0) {
-            return false;
-        }
-
-        String priceStr = request.getParameter("Input.Price");
-        double price;
-        try {
-            price = Double.parseDouble(priceStr);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-
-        if (price < MIN_VALUE_OF_PRICE || price > MAX_VALUE_OF_PRICE) {
-            return false;
-        }
-
-        String quantityStr = request.getParameter("Input.Quantity");
-        int quantity;
-        try {
-            quantity = Integer.parseInt(quantityStr);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-
-        if (quantity < MIN_VALUE_OF_QUANTITY || quantity > MAX_VALUE_OF_QUANTITY) {
-            return false;
-        }
-
-
-        return true;
+        return checkValidProduct(request);
     }
 
     public static Boolean validateCheckingOutRequest(HttpServletRequest request) {

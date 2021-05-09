@@ -9,8 +9,6 @@ import java.util.Map;
 public interface ProductDao extends Dao {
     List<Product> queryAll(int categoryId, int status, int limit, int offset) throws SQLException;
 
-    List<Product> queryByName(String name);
-
     List<Product> queryByCategoryId(Integer categoryId, int limit, int offset) throws SQLException;
 
     List<Product> queryHotListProductByCategoryId(Integer categoryId) throws SQLException;

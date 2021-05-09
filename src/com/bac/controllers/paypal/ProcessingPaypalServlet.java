@@ -1,10 +1,10 @@
-package com.bac.controllers.google;
+package com.bac.controllers.paypal;
 
-import com.bac.models.entities.Account;
-import com.bac.models.entities.builder.AccountBuilder;
-import com.bac.models.services.AccountService;
-import com.bac.models.services.ValidatorService;
-import com.bac.models.services.impl.AccountServiceImpl;
+import com.bac.models.entities.Invoice;
+import com.bac.models.entities.PaypalPay;
+import com.bac.models.entities.builder.PaypalPayBuilder;
+import com.bac.models.services.PaypalService;
+import com.bac.models.services.impl.PaypalServiceImpl;
 import com.bac.models.utilities.HanaShopContext;
 import org.apache.log4j.Logger;
 
@@ -18,41 +18,40 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
-/**
- * @author nhatn
- */
-@WebServlet(name = "UpdatingInformationGoogleUserServlet", value = "/UpdatingInformationGoogleUserServlet")
-public class UpdatingInformationGoogleUserServlet extends HttpServlet {
-    private final static Logger logger = Logger.getLogger(UpdatingInformationGoogleUserServlet.class);
+@WebServlet(name = "ProcessingPaypalServlet", value = "/ProcessingPaypalServlet")
+public class ProcessingPaypalServlet extends HttpServlet {
+    private final static Logger logger = Logger.getLogger(ProcessingPaypalServlet.class);
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Boolean isValid = ValidatorService.validateUpdateInformationGoogleUser(request);
-        if (!isValid) {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Invoice invoice = (Invoice) session.getAttribute("invoice");
+        String transactionId = request.getParameter("transactionId");
+
+        if (invoice == null || transactionId == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
+        Integer invoiceId = invoice.getId();
 
+        PaypalPay paypalPay = PaypalPayBuilder.aPaypalPay()
+                .withInvoiceId(invoiceId)
+                .withTransactionId(transactionId).build();
         HanaShopContext hanaShopContext = null;
+
         try {
-            HttpSession session = request.getSession();
             hanaShopContext = new HanaShopContext();
-            Account account = AccountBuilder.anAccount()
-                    .withUsername((String) session.getAttribute("username"))
-                    .withFirstName(request.getParameter("Input.FirstName"))
-                    .withLastName(request.getParameter("Input.LastName"))
-                    .build();
-            AccountService accountService = new AccountServiceImpl(hanaShopContext);
-            account = accountService.addInfo(account);
-            if (account == null) {
+            PaypalService paypalService = new PaypalServiceImpl(hanaShopContext);
+            paypalPay = paypalService.save(paypalPay);
+            if (paypalPay != null) {
+                hanaShopContext.saveChanges();
+                session.removeAttribute("invoice");
+                session.removeAttribute("invoiceDetails");
+                session.removeAttribute("sum");
+            } else {
                 hanaShopContext.rollback();
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                return;
             }
-
-            hanaShopContext.saveChanges();
-            session.setAttribute("firstName", account.getFirstName());
-            response.sendRedirect("DispatcherServlet");
         } catch (SQLException | NamingException throwables) {
             try {
                 if (hanaShopContext != null) {

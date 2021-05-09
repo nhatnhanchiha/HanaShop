@@ -69,9 +69,9 @@ public class AccountDaoImpl implements AccountDao {
         PreparedStatement smt = null;
         ResultSet rs = null;
         try {
-            String sql = "select username, FirstName, lastName\n" +
+            String sql = "select username, FirstName, lastName, status\n" +
                     "from Account\n" +
-                    "where username = ? and  Password = ? and Status = 1;";
+                    "where username = ? and  Password = ?;";
             smt = conn.prepareStatement(sql);
             smt.setString(1, username);
             smt.setString(2, password);
@@ -81,7 +81,8 @@ public class AccountDaoImpl implements AccountDao {
                         .anAccount()
                         .withUsername(rs.getString("username"))
                         .withFirstName(rs.getString("FirstName"))
-                        .withLastName(rs.getString("LastName"))
+                        .withLastName(rs.getString("lastName"))
+                        .withStatus(rs.getBoolean("status"))
                         .build();
             }
         } finally {

@@ -5,7 +5,6 @@ import com.bac.models.entities.Category;
 import com.bac.models.pages.LoginPage;
 import com.bac.models.services.AccountService;
 import com.bac.models.services.ProductService;
-import com.bac.models.services.ValidatorService;
 import com.bac.models.services.impl.AccountServiceImpl;
 import com.bac.models.services.impl.ProductServiceImpl;
 import com.bac.models.utilities.HanaShopContext;
@@ -33,11 +32,6 @@ public class AuthenticationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HanaShopContext hanaShopContext = null;
-        HttpSession session = request.getSession();
-        if (session.getAttribute("username") != null) {
-            response.sendRedirect("DispatcherServlet");
-            return;
-        }
         try {
             hanaShopContext = new HanaShopContext();
             ProductService productService = new ProductServiceImpl(hanaShopContext);
@@ -70,26 +64,29 @@ public class AuthenticationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Boolean isValid = ValidatorService.validateLoginRequest(request);
         HanaShopContext hanaShopContext = null;
-        if (!isValid) {
-            String messenger = "Wrong username or password";
-            request.setAttribute("messenger", messenger);
-            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
-            rd.forward(request, response);
-        } else {
-            try {
-                hanaShopContext = new HanaShopContext();
-                AccountService accountService = new AccountServiceImpl(hanaShopContext);
-                String username = request.getParameter("Input.Username");
-                String password = request.getParameter("Input.Password");
-                Account account = accountService.login(username, password);
-                if (account == null) {
-                    String messenge = "Wrong username or password";
-                    request.setAttribute("messenge", messenge);
+        try {
+            hanaShopContext = new HanaShopContext();
+            AccountService accountService = new AccountServiceImpl(hanaShopContext);
+            String username = request.getParameter("Input.Username");
+            String password = request.getParameter("Input.Password");
+            Account account = accountService.login(username, password);
+            if (account == null) {
+                String message = "Wrong username or password";
+                request.setAttribute("message", message);
+                ProductService productService = new ProductServiceImpl(hanaShopContext);
+                List<Category> categories = productService.getAllCategory();
+                LoginPage loginPage = new LoginPage(categories, message);
+                request.setAttribute("model", loginPage);
+                RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+                rd.forward(request, response);
+            } else {
+                if (!account.getStatus()) {
+                    String message = "Your account is locked";
+                    request.setAttribute("message", message);
                     ProductService productService = new ProductServiceImpl(hanaShopContext);
                     List<Category> categories = productService.getAllCategory();
-                    LoginPage loginPage = new LoginPage(categories, messenge);
+                    LoginPage loginPage = new LoginPage(categories, message);
                     request.setAttribute("model", loginPage);
                     RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
                     rd.forward(request, response);
@@ -100,26 +97,27 @@ public class AuthenticationServlet extends HttpServlet {
                     RequestDispatcher rd = request.getRequestDispatcher("IndexServlet");
                     rd.forward(request, response);
                 }
-            } catch (SQLException | NamingException throwables) {
-                try {
-                    if (hanaShopContext != null) {
-                        hanaShopContext.rollback();
-                    }
-                } catch (SQLException e) {
-                    logger.error(e.getCause());
-                }
-                logger.error(throwables.getCause());
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            } finally {
+            }
+        } catch (SQLException | NamingException throwables) {
+            try {
                 if (hanaShopContext != null) {
-                    try {
-                        hanaShopContext.closeConnection();
-                    } catch (SQLException throwables) {
-                        logger.error(throwables.getCause());
-                        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                    }
+                    hanaShopContext.rollback();
+                }
+            } catch (SQLException e) {
+                logger.error(e.getCause());
+            }
+            logger.error(throwables.getCause());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } finally {
+            if (hanaShopContext != null) {
+                try {
+                    hanaShopContext.closeConnection();
+                } catch (SQLException throwables) {
+                    logger.error(throwables.getCause());
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 }
             }
         }
     }
 }
+

@@ -14,6 +14,7 @@ public final class InvoiceBuilder {
     private String phoneNumber;
     private Boolean paid;
     private LocalDate createDate;
+    private Boolean payWithPayPal;
 
     private InvoiceBuilder() {
     }
@@ -67,6 +68,11 @@ public final class InvoiceBuilder {
         return this;
     }
 
+    public InvoiceBuilder withPayWithPayPal(Boolean payWithPayPal) {
+        this.payWithPayPal = payWithPayPal;
+        return this;
+    }
+
     public Invoice build() {
         Invoice invoice = new Invoice();
         invoice.setId(id);
@@ -78,6 +84,7 @@ public final class InvoiceBuilder {
         invoice.setPhoneNumber(phoneNumber);
         invoice.setPaid(paid);
         invoice.setCreateDate(createDate);
+        invoice.setPayWithPayPal(payWithPayPal);
         return invoice;
     }
 }

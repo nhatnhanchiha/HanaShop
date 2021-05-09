@@ -16,8 +16,25 @@
 <c:set var="model" value="${requestScope.model}"/>
 <jsp:include page="shared/_Navbar.jsp"/>
 <div class="container">
+    <hr>
+    <form action="DispatcherServlet" method="get" class="row">
+        <div class="form-group col-4">
+            <label for="Input_FoodName">Food Name</label>
+            <input name="Input.FoodName" class="form-control" id="Input_FoodName" type="text" value="${param['Input.FoodName']}">
+        </div>
+        <div class="form-group col-4">
+            <label for="Input_ShoppingDate">Shopping Date</label>
+            <input type="date" name="Input.ShoppingDate" class="form-control" id="Input_ShoppingDate" value="${param['Input.ShoppingDate']}">
+        </div>
+        <input type="hidden" name="action" value="view-list-invoice">
+        <div class="form-group col-2">
+            <label>Search Button</label>
+            <button type="submit" class="form-control btn btn-info">Search</button>
+        </div>
+    </form>
+    <hr>
     <c:if test="${empty model.invoices}">
-        <h1 class="text-danger">Bạn chưa bao giờ mua trên hệ thống này</h1>
+        <h1 class="text-danger">Không có đơn hàng nào cả</h1>
     </c:if>
     <c:if test="${not empty model.invoices}">
         <table class="table table-hover">
@@ -42,7 +59,7 @@
                     <a><h3>Prev</h3></a>
                 </c:if>
                 <c:if test="${model.page > 1}">
-                    <a href="DispatcherServlet?action=view-list-invoice&page=${model.page - 1}"><h3>Prev</h3></a>
+                    <a href="DispatcherServlet?action=view-list-invoice&page=${model.page - 1}&Input.FoodName=${param['Input.FoodName']}&Input.ShoppingDate=${param['Input.ShoppingDate']}"><h3>Prev</h3></a>
                 </c:if>
 
             </div>
@@ -54,11 +71,13 @@
                     <a><h3>Next</h3></a>
                 </c:if>
                 <c:if test="${model.hasNextPage}">
-                    <a href="DispatcherServlet?action=view-list-invoice&page=${model.page + 1}"><h3>Next</h3></a>
+                    <a href="DispatcherServlet?action=view-list-invoice&page=${model.page + 1}&Input.FoodName=${param['Input.FoodName']}&Input.ShoppingDate=${param['Input.ShoppingDate']}"><h3>Next</h3></a>
                 </c:if>
             </div>
         </div>
     </c:if>
 </div>
+<jsp:include page="shared/_Jquery.jsp"/>
+<jsp:include page="shared/_BootstrapJs.jsp"/>
 </body>
 </html>

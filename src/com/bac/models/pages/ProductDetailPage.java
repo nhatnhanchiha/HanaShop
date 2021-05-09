@@ -7,6 +7,8 @@ import com.bac.models.entities.Product;
 import java.util.List;
 
 public class ProductDetailPage extends Page {
+
+    private static final long serialVersionUID = -7186702646031348962L;
     private Product product;
     private Carousel carousel;
 

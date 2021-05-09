@@ -13,7 +13,7 @@
 <body>
 <h1>Admin login</h1>
 <h3 style="color: red">${requestScope.message}</h3>
-<form action="AuthenticationAdminServlet" method="post">
+<form action="DispatcherServlet" method="post">
     <table>
         <tr>
             <td><label for="admin-username">Username</label></td>
@@ -24,7 +24,7 @@
             <td><input type="password" name="Input.AdminPassword" id="admin-password"></td>
         </tr>
         <tr>
-            <td></td>
+            <td><input type="hidden" name="action" value="admin-login"></td>
             <td><input type="submit" value="Login">
                 <input type="reset" value="Reset"></td>
         </tr>

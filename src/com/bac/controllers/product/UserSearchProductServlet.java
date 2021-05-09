@@ -111,7 +111,6 @@ public class UserSearchProductServlet extends HttpServlet {
             } catch (SQLException e) {
                 logger.error(e.getCause());
             }
-            throwables.printStackTrace();
             logger.error(throwables.getCause());
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } finally {

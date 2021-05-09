@@ -50,21 +50,21 @@
                     <div class="carousel-inner" role="listbox">
                         <!--First slide-->
                         <div class="carousel-item active ">
-                            <img class=".img-on-carousel"
-                                 src="https://mdbootstrap.com/img/Photos/Slides/img%20(130).jpg"
+                            <img class="img-on-carousel"
+                                 src="shared/carousel1.jpg"
                                  alt="First slide">
                         </div>
                         <!--/First slide-->
                         <!--Second slide-->
                         <div class="carousel-item">
-                            <img class=".img-on-carousel"
-                                 src="https://mdbootstrap.com/img/Photos/Slides/img%20(129).jpg"
+                            <img class="img-on-carousel"
+                                 src="shared/carousel2.jpg"
                                  alt="Second slide">
                         </div>
                         <!--/Second slide-->
                         <!--Third slide-->
                         <div class="carousel-item ">
-                            <img class=".img-on-carousel" src="shared/FLAMING%20MOUNTAIN.JPG" alt="Third slide">
+                            <img class="img-on-carousel" src="shared/carousel3.jpg" alt="Third slide">
                         </div>
                         <!--/Third slide-->
                     </div>

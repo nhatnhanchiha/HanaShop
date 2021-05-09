@@ -16,4 +16,12 @@
         <error-code>401</error-code>
         <location>/AuthenticationServlet</location>
     </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/NotFound.html</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/Server%20Error.html</location>
+    </error-page>
 </web-app>

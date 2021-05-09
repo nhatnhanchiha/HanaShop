@@ -77,7 +77,7 @@
                 <c:forEach items="${model.listSuggestion}" var="product">
                     <li>
                         <div>
-                            <a href="#">
+                            <a href="DispatcherServlet?action=view-detail-product&productId=${product.productId}">
                                 <h4>${product.name}</h4>
                                 <p class="short-description-min">${product.shortDescription}</p>
                             </a>

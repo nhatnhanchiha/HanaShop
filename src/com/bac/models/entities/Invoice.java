@@ -17,6 +17,7 @@ public class Invoice implements Serializable {
     private String phoneNumber;
     private Boolean paid;
     private LocalDate createDate;
+    private Boolean payWithPayPal;
 
     public int getId() {
         return id;
@@ -88,5 +89,13 @@ public class Invoice implements Serializable {
 
     public void setCreateDate(LocalDate createDate) {
         this.createDate = createDate;
+    }
+
+    public Boolean getPayWithPayPal() {
+        return payWithPayPal;
+    }
+
+    public void setPayWithPayPal(Boolean payWithPayPal) {
+        this.payWithPayPal = payWithPayPal;
     }
 }
